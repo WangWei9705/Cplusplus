@@ -28,13 +28,14 @@ int main()
 	int count = 0;
 	int maxcount = 0;
 	cin >> num;
-
+#if 0
     while(num != 0) {
         num = num &(num << 1);
         maxcount++;
     }
 
-#if 0
+#endif
+
 	decToBin(num);
 	size_t i = 0;
 	while (i < v.size()) {
@@ -43,7 +44,7 @@ int main()
 			i++;
 		}
 
-		if (maxcount <= count) {
+		if (maxcount < count) {
 			maxcount = count;
 		}
 		else {
@@ -56,7 +57,6 @@ int main()
 		}
 	}
 	
-#endif
 	cout << maxcount << endl;
 
 	return 0;
