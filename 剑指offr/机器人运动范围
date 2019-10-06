@@ -1,0 +1,56 @@
+题目描述
+地上有一个m行和n列的方格。一个机器人从坐标0,0的格子开始移动，每一次只能向左，右，上，下四个方向移动一格，但是不能进入行坐标和列坐标的数位之和大于k的格子。 例如，当k为18时，机器人能够进入方格（35,37），因为3+5+3+7 = 18。但是，它不能进入方格（35,38），因为3+5+3+8 = 19。请问该机器人能够达到多少个格子？
+
+// 源代码
+class Solution {
+public:
+    
+    int sum(int x) {
+        int ret = 0;
+        while(x) {
+            ret += x%10;
+            x /= 10;
+        }
+        return ret;
+    }
+    
+    int get_sum(pair<int, int>& p) {
+        return sum(p.first) + sum(p.second);
+    }
+    int movingCount(int threshold, int rows, int cols)
+    {
+        // 判断边界
+        if(rows <= 0 || cols <= 0)
+            return -1;
+        
+        int res = 0;
+        
+        // 定义二维数组标记当前坐标是否走过
+        vector<vector<bool>> flag(rows, vector<bool>(cols, false));
+        
+        // 定义队列记录当前坐标
+        queue<pair<int, int>> q;
+        q.push({0, 0});  // 初始化
+        
+        // 定义向量
+        int dx[4] = {-1, 0, 1, 0}, dy[4] = {0, 1, 0, -1};
+        
+        while(!q.empty()) {
+            auto t = q.front();
+            q.pop();
+            
+            if(get_sum(t) > threshold || flag[t.first][t.second])
+                continue;
+            res++;
+            flag[t.first][t.second] = true;
+            
+            for(int i = 0; i < 4; i++) {
+                int a = t.first + dx[i], b = t.second + dy[i];
+                if(a >= 0 && a < rows && b >= 0 && b < cols)
+                    q.push({a, b});
+            }
+        }
+        return res;
+        
+    }
+};
